@@ -2,11 +2,8 @@ const express = require('express');
 const users = require('./users')
 const app = express();
 
-const getSpecialty = (path) => {
-    if(path == '/marketing') return users.filter(user => user.specialty == 'marketing')
-    else if(path == '/developers') return users.filter(user => user.specialty == 'developers')
-    else if(path == '/ventas') return users.filter(user => user.specialty == 'ventas')
-    else if(path == '/QAs') return users.filter(user => user.specialty == 'QAs')
+const getSpecialty = (specialty) => {
+    return users.filter(user => user.specialty == specialty)
 };
 
 const renderUsers = (arr) => {
@@ -17,8 +14,9 @@ const renderUsers = (arr) => {
             <p><b>Name:</b> ${item.name}</p>
             <p><b>Age:</b> ${item.age}</p>
         </div>
+        <hr>
         `
-    })
+    }).join('')
 };
 
 const goHome = `<br><a href="/">Home</a><br>`
@@ -28,27 +26,27 @@ app.get('/', (req, res) => {
 });
 
 app.get('/marketing', (req, res) => {
-    let data = getSpecialty(req.path)
+    let data = getSpecialty('marketing')
     let content = renderUsers(data)
-    res.send(`<h1>Marketing:</h1>${goHome}${content}`)
+    res.send(`<h1>Marketing:</h1><br>Total: ${data.length}<br>${goHome}${content}`)
 });
 
 app.get('/developers', (req, res) => {
-    let data = getSpecialty(req.path)
+    let data = getSpecialty('developers')
     let content = renderUsers(data)
-    res.send(`<h1>Developers:</h1>${goHome}${content}`)
+    res.send(`<h1>Developers:</h1><br>Total: ${data.length}<br>${goHome}${content}`)
 });
 
 app.get('/ventas', (req, res) => {
-    let data = getSpecialty(req.path)
+    let data = getSpecialty('ventas')
     let content = renderUsers(data)
-    res.send(`<h1>Ventas:</h1>${goHome}${content}`)
+    res.send(`<h1>Ventas:</h1><br>Total: ${data.length}<br>${goHome}${content}`)
 });
 
 app.get('/QAs', (req, res) => {
-    let data = getSpecialty(req.path)
+    let data = getSpecialty('QAs')
     let content = renderUsers(data)
-    res.send(`<h1>QAs:</h1>${goHome}${content}`)
+    res.send(`<h1>QAs:</h1><br>Total: ${data.length}<br>${goHome}${content}`)
 });
 
 app.use((req, res) => {
